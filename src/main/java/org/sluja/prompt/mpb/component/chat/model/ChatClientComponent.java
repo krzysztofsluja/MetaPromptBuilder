@@ -3,6 +3,7 @@ package org.sluja.prompt.mpb.component.chat.model;
 import groovyjarjarpicocli.CommandLine;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.sluja.prompt.mpb.interfaces.chat.IStreamChatPrompt;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
@@ -15,7 +16,7 @@ import reactor.core.publisher.Flux;
 
 @Component
 @Scope(value= WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class ChatClientComponent {
+public class ChatClientComponent implements IStreamChatPrompt {
 
     private final ChatClient chatClient;
 
@@ -26,7 +27,8 @@ public class ChatClientComponent {
                 .build();
     }
 
-    public Flux<String> streamChat(final Prompt prompt) {
+    @Override
+    public Flux<String> chat(final Prompt prompt) {
         return chatClient.prompt(prompt)
                 .stream()
                 .content();
