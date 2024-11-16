@@ -87,6 +87,12 @@
     const messageInput = document.getElementById('message-input');
     const chatMessages = document.getElementById('chat-messages');
 
+    function displayWelcomeMessage() {
+        addMessageToChat('MetaPrompt Builder Model', 'Hello! Let\'s build some prompt :) Are you ready?');
+    }
+
+    document.addEventListener('DOMContentLoaded', displayWelcomeMessage);
+
     chatForm.addEventListener('submit', async function (e) {
         e.preventDefault();
         const message = messageInput.value;
@@ -102,7 +108,7 @@
         try {
             const response = await fetchStreamWithRetry('/chat?message=' + encodeURIComponent(message));
             const reader = response.body.getReader();
-            let botMessageElement = addMessageToChat('Bot', '');
+            let botMessageElement = addMessageToChat('MetaPrompt Builder Model', '');
             let contentElement = botMessageElement.querySelector('.message-content');
             await processStream(reader, contentElement);
         } catch (error) {
